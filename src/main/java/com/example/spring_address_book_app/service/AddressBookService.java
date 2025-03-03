@@ -77,4 +77,14 @@ public class AddressBookService {
         addressBook.setEmail(addressBookDTO.getEmail());
         return addressBook;
     }
+
+    public void deleteAddress(Long id) {
+        Optional<AddressBook> addressBook = addressBookRepository.findById(id);
+        if (addressBook.isPresent()) {
+            addressBookRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Address book entry not found for ID: " + id);
+        }
+
+    }
 }
