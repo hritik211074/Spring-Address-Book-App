@@ -1,6 +1,5 @@
 package com.example.spring_address_book_app.model;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -12,10 +11,10 @@ import lombok.ToString;
 public class AddressBook {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Automatically generates the ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate ID
     private Long id;
 
-    @Column(nullable = false, length = 100)  // Sets constraints on the column
+    @Column(nullable = false, length = 100)  // Constraints on the column
     private String name;
 
     @Column(nullable = false, length = 15)

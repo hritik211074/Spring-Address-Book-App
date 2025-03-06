@@ -17,45 +17,44 @@ public class AddressBookService {
     private AddressBookRepository addressBookRepository;
 
     // Get all Address Books
-    public List<AddressBookDTO> getAllAddressBooks() {
-        List<AddressBook> addressBooks = addressBookRepository.findAll();
-        return addressBooks.stream()
+    public List<AddressBookDTO> getAllAddresses() {
+        return addressBookRepository.findAll()
+                .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     // Get Address Book by ID
-    public AddressBookDTO getAddressBookById(Long id) {
-        Optional<AddressBook> addressBook = addressBookRepository.findById(id);
-        return addressBook.map(this::convertToDTO).orElse(null);
+    public Optional<AddressBookDTO> getAddressById(Long id) {
+        return addressBookRepository.findById(id)
+                .map(this::convertToDTO);
     }
 
     // Create Address Book
-    public AddressBookDTO createAddressBook(AddressBookDTO addressBookDTO) {
+    public AddressBookDTO createAddress(AddressBookDTO addressBookDTO) {
         AddressBook addressBook = convertToEntity(addressBookDTO);
         AddressBook savedAddressBook = addressBookRepository.save(addressBook);
         return convertToDTO(savedAddressBook);
     }
 
     // Update Address Book
-    public AddressBookDTO updateAddressBook(Long id, AddressBookDTO addressBookDTO) {
-        Optional<AddressBook> existingAddressBook = addressBookRepository.findById(id);
-
-        if (existingAddressBook.isPresent()) {
-            AddressBook addressBook = existingAddressBook.get();
-            addressBook.setName(addressBookDTO.getName());
-            addressBook.setPhoneNumber(addressBookDTO.getPhoneNumber());
-            addressBook.setEmail(addressBookDTO.getEmail());
-            AddressBook updatedAddressBook = addressBookRepository.save(addressBook);
-            return convertToDTO(updatedAddressBook);
-        }
-
-        return null;
+    public Optional<AddressBookDTO> updateAddress(Long id, AddressBookDTO addressBookDTO) {
+        return addressBookRepository.findById(id).map(existingAddress -> {
+            existingAddress.setName(addressBookDTO.getName());
+            existingAddress.setPhoneNumber(addressBookDTO.getPhoneNumber());
+            existingAddress.setEmail(addressBookDTO.getEmail());
+            AddressBook updatedAddress = addressBookRepository.save(existingAddress);
+            return convertToDTO(updatedAddress);
+        });
     }
 
     // Delete Address Book by ID
-    public void deleteAddressBook(Long id) {
-        addressBookRepository.deleteById(id);
+    public boolean deleteAddress(Long id) {
+        if (addressBookRepository.existsById(id)) {
+            addressBookRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     // Convert Entity to DTO
@@ -71,20 +70,9 @@ public class AddressBookService {
     // Convert DTO to Entity
     private AddressBook convertToEntity(AddressBookDTO addressBookDTO) {
         AddressBook addressBook = new AddressBook();
-        addressBook.setId(addressBookDTO.getId());
         addressBook.setName(addressBookDTO.getName());
         addressBook.setPhoneNumber(addressBookDTO.getPhoneNumber());
         addressBook.setEmail(addressBookDTO.getEmail());
         return addressBook;
-    }
-
-    public void deleteAddress(Long id) {
-        Optional<AddressBook> addressBook = addressBookRepository.findById(id);
-        if (addressBook.isPresent()) {
-            addressBookRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Address book entry not found for ID: " + id);
-        }
-
     }
 }
