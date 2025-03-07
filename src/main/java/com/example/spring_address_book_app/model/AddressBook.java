@@ -21,5 +21,15 @@ public class AddressBook {
     private String phoneNumber;
 
     @Column(nullable = true, length = 100)
-    private String email;
+    private String ZipCode;
+
+    @Column(nullable = true, length = 100)
+    private String city;
+
+    @Column(nullable = true, length = 100)
+    private String state;
+
+    @Column(nullable = true, length = 100)
+    private String address;
+
 }

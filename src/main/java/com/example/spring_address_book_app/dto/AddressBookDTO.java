@@ -7,5 +7,12 @@ public class AddressBookDTO {
     private Long id;
     private String name;
     private String phoneNumber;
-    private String email;
+    private String state;
+    private String city;
+    private String ZipCode;
+    private String address;
+
+
+    public void setZipCode(String zipCode) {
+    }
 }

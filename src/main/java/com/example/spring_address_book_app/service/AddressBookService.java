@@ -42,7 +42,11 @@ public class AddressBookService {
         return addressBookRepository.findById(id).map(existingAddress -> {
             existingAddress.setName(addressBookDTO.getName());
             existingAddress.setPhoneNumber(addressBookDTO.getPhoneNumber());
-            existingAddress.setEmail(addressBookDTO.getEmail());
+            existingAddress.setState(addressBookDTO.getState());
+            existingAddress.setAddress(addressBookDTO.getAddress());
+            existingAddress.setZipCode(addressBookDTO.getZipCode());
+            existingAddress.setCity(addressBookDTO.getCity());
+
             AddressBook updatedAddress = addressBookRepository.save(existingAddress);
             return convertToDTO(updatedAddress);
         });
@@ -63,7 +67,11 @@ public class AddressBookService {
         addressBookDTO.setId(addressBook.getId());
         addressBookDTO.setName(addressBook.getName());
         addressBookDTO.setPhoneNumber(addressBook.getPhoneNumber());
-        addressBookDTO.setEmail(addressBook.getEmail());
+        addressBookDTO.setZipCode(addressBook.getZipCode());
+
+        addressBookDTO.setCity(addressBook.getCity());
+        addressBookDTO.setAddress(addressBook.getAddress());
+        addressBookDTO.setState(addressBook.getState());
         return addressBookDTO;
     }
 
@@ -72,7 +80,10 @@ public class AddressBookService {
         AddressBook addressBook = new AddressBook();
         addressBook.setName(addressBookDTO.getName());
         addressBook.setPhoneNumber(addressBookDTO.getPhoneNumber());
-        addressBook.setEmail(addressBookDTO.getEmail());
+        addressBook.setZipCode(addressBookDTO.getZipCode());
+        addressBook.setState(addressBookDTO.getState());
+        addressBook.setAddress(addressBookDTO.getAddress());
+        addressBook.setCity(addressBookDTO.getCity());
         return addressBook;
     }
 }
